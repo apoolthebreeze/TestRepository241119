@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="imagetoolbar" content="no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="format-detection" content="telephone=no">
+<meta name="title" content="웹사이트">
+<meta name="description" content="웹사이트입니다.">
+<meta name="keywords" content="키워드,키워드,키워드">
+<meta property="og:title" content="웹사이트">
+<meta property="og:description" content="웹사이트입니다">
+<meta property="og:image" content="https://웹사이트/images/opengraph.png">
+<meta property="og:url" content="https://웹사이트">
+<title>메인 | dy</title>
+<link rel="stylesheet" th:href="@{/css/setting.css}">
+<link rel="stylesheet" th:href="@{/css/plugin.css}">
+<link rel="stylesheet" th:href="@{/css/template.css}">
+<link rel="stylesheet" th:href="@{/css/common.css}">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+</head>
+
+<body>
+	<!-- [S]tedu-N3 -->
+	<div class="tedu-N3" data-bid="XEm3ZgHi4n">
+		<div class="header-container lightmode">
+			<div class="header-top">
+				<div class="inner">
+					<div class="header-member">
+						<a th:href="@{/login}"> <em class="ico"> <img
+								th:src="@{/icons/ico_login.svg}" alt="로그인 아이콘">
+						</em> <span>로그인</span>
+						</a> <a href="/register/membershipAgree"> <em class="ico"> <img
+								src="/icons/ico_member.svg" alt="회원가입 아이콘">
+						</em> <span>회원가입</span>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="header-nav">
+				<div class="inner">
+					<div class="header-logo">
+						<a href="/"> <img src="/images/logo_black.png" alt="로고">
+						</a>
+					</div>
+
+					<div class="header-gnb">
+						<div class="gnb-list">
+							<a th:href="@{goodsLists}">BEST 교육</a>
+						</div>
+						<div class="gnb-list">
+							<a href="javascript:void(0)">신규</a>
+						</div>
+						<div class="gnb-list">
+							<a href="javascript:void(0)">온라인 교육</a>
+						</div>
+					</div>
+					<div class="header-btn"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- [E]tedu-N3 -->
+
+	<main class="th-layout-main ">
+		<!-- [S]tedu-N33 -->
+			<div class="tedu-N33" data-bid="fJM3zGnM5Y">
+        <div class="content-inner">
+            <div class="content-container">
+                <div class="form-wrap">
+                    <div class="form-header">
+                        <h3 class="form-tit">LOGIN</h3>
+                    </div>
+                    <div class="form-body">
+                        <form id="loginForm" onsubmit="return validateForm()" action="/login" method="post" th:object="${loginCommand}">
+                            <div class="tedu-inputset">
+                                <input type="text" id="userId" class="tedu-input lightmode" placeholder="아이디" name="userId" aria-label="ID" th:value="${loginCommand.userId}">
+                                <span th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"></span>
+                            </div>
+									 <div class="tedu-inputset">
+                                <input type="password" id="userPw" class="tedu-input lightmode" placeholder="비밀번호" name="userPw" aria-label="Password" th:value="${loginCommand.userPw}">
+                                <span th:if="${#fields.hasErrors('userPw')}" th:errors="*{userPw}"></span>
+                            </div>
+                            <div class="contents-checkset d-flex justify-content-start">
+                                <div class="checkset">
+                                    <input id="checkset-c-3-1" class="checkset-input input-round" type="checkbox" value="" name="autoLogin"> 
+                                    <label class="checkset-label" for="checkset-c-3-1"></label> 
+                                    <span class="checkset-text">자동 로그인</span>
+                                </div>
+                                <div class="checkset">
+                                    <input id="checkset-c-3-2" class="checkset-input input-round" type="checkbox" value="" name="idStore" th:checked="${loginCommand.idStore}"> 
+                                    <label class="checkset-label" for="checkset-c-3-2"></label> 
+                                    <span class="checkset-text">아이디 저장</span>
+                                </div>
+                            </div>
+                            <ul class="contents-list d-flex justify-content-center">
+                                <li class="contents-item"><a href="/register/membershipAgree" class="contents-link">회원가입</a></li>
+                                <li class="contents-item"><a href="/help/findId" class="contents-link">아이디 찾기</a></li>
+                                <li class="contents-item"><a href="/help/findPw" class="contents-link">비밀번호 찾기</a></li>
+                            </ul>
+                            <div class="btn-box">
+                                <button type="submit" class="tedu-btn tedu-btn-light btn-link">로그인</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+			<!-- [E]tedu-N33 -->
+	</main>
+	<!-- [S]tedu-N17 -->
+	<div class="tedu-N17" data-bid="WkM3Zgnm99">
+		<div class="footer-container">
+			<div class="footer-top">
+				<div class="inner">
+					<div class="footer-menu">
+						<a href="javascript:void(0)">이용약관</a> <a href="javascript:void(0)">개인정보처리방침</a>
+					</div>
+				</div>
+			</div>
+			<div class="footer-area">
+				<div class="inner">
+					<dif class="footer-info-wrap">
+					<div class="footer-logo">
+						<a href="javascript:void(0)"> <img
+							src="/images/logo_white.png" alt="로고">
+						</a>
+					</div>
+					<div class="footer-info">
+						<span>서울시 금천구 벚꽃로36길 30 가산 KS타워 1409호</span> <span>T.
+							070-8872-8874</span> <span>E. help@openfield.co.kr</span> <span
+							class="copy">2022 BY TEMPLATEHOUSE. ALL RIGHTS RESEVED</span>
+					</div>
+					</dif>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- [E]tedu-N17 -->
+	<script src="/js/setting.js"></script>
+	<script src="/js/plugin.js"></script>
+	<script src="/js/template.js"></script>
+	<script src="/js/common.js"></script>
+	<script src="/js/script.js"></script>
+</body>

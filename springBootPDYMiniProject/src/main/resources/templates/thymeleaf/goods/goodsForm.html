@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 관리 | dy</title>
+    <link rel="stylesheet" href="/css/setting.css">
+    <link rel="stylesheet" href="/css/plugin.css">
+    <link rel="stylesheet" href="/css/template.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <style>
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        .btn-search {
+            padding: 5px 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        .btn-search:hover {
+            background-color: #218838;
+        }
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pagination a {
+            margin: 0 5px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+        .pagination a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        $(function () {
+            $("#btn").click(function () {
+                var formData = new FormData($("#frm")[0]);
+                $.ajax({
+                    type: "post",
+                    url: "goodsWrite",
+                    data: formData,
+                    enctype: "multipart/form-data",
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        if (result == 200) {
+                            location.href = "goodsList";
+                        } else {
+                            $("#writeForm").html(result);
+                        }
+                    },
+                    error: function () {
+                        alert("로그인을 다시 시도해 주세요.");
+                        location.href = "/";
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="content-inner">
+        <div class="content-container">
+            <h2>상품 등록</h2>
+            <form action="goodsWrite" method="post" id="frm" enctype="multipart/form-data" th:object="${goodsCommand}">
+                <table border="1" width="600" align="center">
+                    <tr>
+                        <th width="100">상품번호</th>
+                        <td>
+                            <input type="text" name="goodsNum" th:value="${goodsCommand.goodsNum}" readonly="readonly" />
+                            자동부여
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>상품명</th>
+                        <td>
+                            <input type="text" name="goodsName" th:value="${goodsCommand.goodsName}" />
+                            <br />
+                            <span style="color:red" th:if="${#fields.hasErrors('goodsName')}" th:errors="*{goodsName}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>상품가격</th>
+                        <td>
+                            <input type="number" name="goodsPrice" min="0" th:field="*{goodsPrice}" />
+                            <br />
+                            <span style="color:red" th:if="${#fields.hasErrors('goodsPrice')}" th:errors="*{goodsPrice}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>상품설명</th>
+                        <td>
+                            <textarea rows="10" cols="50" name="goodsContents">[[${goodsCommand.goodsContents}]]</textarea>
+                            <br />
+                            <span style="color:red" th:if="${#fields.hasErrors('goodsContents')}" th:errors="*{goodsContents}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>대문이미지</th>
+                        <td><input type="file" name="goodsMainImage" /></td>
+                    </tr>
+                    <tr>
+                        <th>이미지</th>
+                        <td><input type="file" name="goodsDetailImage" multiple="multiple" /></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            <input type="button" id="btn" value="상품 등록" />
+                        </th>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

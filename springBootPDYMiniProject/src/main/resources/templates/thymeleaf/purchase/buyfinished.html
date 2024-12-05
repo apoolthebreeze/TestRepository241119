@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="imagetoolbar" content="no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="title" content="웹사이트">
+  <meta name="description" content="웹사이트입니다.">
+  <meta name="keywords" content="키워드,키워드,키워드">
+  <meta property="og:title" content="웹사이트">
+  <meta property="og:description" content="웹사이트입니다">
+  <meta property="og:image" content="https://웹사이트/images/opengraph.png">
+  <meta property="og:url" content="https://웹사이트">
+  <title>결제하기 | dy</title>
+  <link rel="stylesheet" href="/css/setting.css">
+  <link rel="stylesheet" href="/css/plugin.css">
+  <link rel="stylesheet" href="/css/template.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+      <style>
+		.body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center; /* 가로 중앙 정렬 */
+            align-items: center;    /* 세로 중앙 정렬 */
+            height: 100vh;          /* 화면 전체 높이 */
+            background-color: #f9f9f9; /* 배경색 */
+            font-family: Arial, sans-serif;
+        }
+        .message {
+            text-align: center; /* 텍스트 가운데 정렬 */
+            font-size: 20px;    /* 글자 크기 */
+            font-weight: bold;  /* 글자 두께 */
+            color: #333;        /* 글자 색상 */
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 10px; /* 버튼 간 간격 */
+            justify-content: center; /* 버튼 중앙 정렬 */
+            margin-top: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px; /* 버튼 내부 여백 */
+            font-size: 16px; /* 글자 크기 */
+            font-weight: bold;
+            color: #fff; /* 글자 색상 */
+            background-color: #4CAF50; /* 버튼 배경색 */
+            border: none;
+            border-radius: 5px; /* 둥근 모서리 */
+            text-decoration: none; /* 밑줄 제거 */
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* 호버 효과 */
+        }
+
+        .button:hover {
+            background-color: #45a049; /* 호버 시 배경색 */
+        }
+
+        .button-secondary {
+            background-color: #007BFF; /* 두 번째 버튼 배경색 */
+        }
+
+        .button-secondary:hover {
+            background-color: #0056b3; /* 두 번째 버튼 호버 색상 */
+        }
+    </style>
+</head>
+
+
+<body>
+
+	<!-- [S]tedu-N3 -->
+	<div class="tedu-N3" data-bid="XEm3ZgHi4n">
+		<div class="header-container lightmode">
+			<div class="header-top">
+				<div class="inner">
+					<div class="header-member">
+						<!-- 로그인 상태에 따라 아이콘 변경 -->
+						<th:block th:if="${session.auth == null}">
+							<a th:href="@{/login}"> <em class="ico"> <img
+									th:src="@{/icons/ico_login.svg}" alt="로그인 아이콘">
+							</em> <span>로그인</span>
+							</a>
+							<a href="/register/membershipAgree"> <em class="ico"> <img
+									src="/icons/ico_member.svg" alt="회원가입 아이콘">
+							</em> <span>회원가입</span>
+							</a>
+						</th:block>
+
+						<th:block th:if="${session.auth != null}">
+							<a href="/logout"> <em class="ico"> <img
+									src="/icons/ico_login.svg" alt="로그아웃 아이콘">
+							</em> <span>로그아웃</span>
+							</a>
+							<th:block th:if="${session.auth.grade == 'mem'}">
+								<a href="/myPage/myPage"> <em class="ico"> <img
+										src="/icons/ico_member.svg" alt="마이페이지 아이콘">
+								</em> <span>마이페이지</span>
+								</a>
+							</th:block>
+							<th:block th:if="${session.auth.grade == 'emp'}">
+								<a href="/myPage/empMyPage"> <em class="ico"> <img
+										src="/icons/ico_member.svg" alt="마이페이지 아이콘">
+								</em> <span>직원페이지</span>
+								</a>
+							</th:block>
+						</th:block>
+
+					</div>
+				</div>
+			</div>
+			<div class="header-nav">
+				<div class="inner">
+					<div class="header-logo">
+						<a href="/"> <img src="/images/logo_black.png" alt="로고">
+						</a>
+					</div>
+					<div class="header-gnb">
+						<div class="gnb-list">
+							<a th:href="@{goodsLists}">BEST 교육</a>
+						</div>
+						<div class="gnb-list">
+							<a href="javascript:void(0)">신규</a>
+						</div>
+						<div class="gnb-list">
+							<a href="javascript:void(0)">온라인 교육</a>
+						</div>
+					</div>
+					<div class="header-btn"></div>
+				</div>
+			</div>
+		</div>
+  <!-- [E]tedu-N3 -->
+  <main class="th-layout-main ">
+ <div class="message">
+        회원님 결제가 완료되었습니다.
+    </div>
+
+<div class="button-container">
+        <a href="orderList" class="button">구매리스트</a>
+        <a href="/" class="button button-secondary">홈</a>
+    </div>
+ 
+   
+  </main>
+  <!-- [S]tedu-N17 -->
+  <div class="tedu-N17" data-bid="GeM3zGpMBM">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="inner">
+          <div class="footer-menu">
+            <a href="javascript:void(0)">이용약관</a>
+            <a href="javascript:void(0)">개인정보처리방침</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-area">
+        <div class="inner">
+          <dif class="footer-info-wrap">
+            <div class="footer-logo">
+              <a href="javascript:void(0)">
+                <img src="/images/logo_white.png" alt="로고">
+              </a>
+            </div>
+            <div class="footer-info">
+              <span>서울시 금천구 벚꽃로36길 30 가산 KS타워 1409호</span>
+              <span>T. 070-8872-8874</span>
+              <span>E. help@openfield.co.kr</span>
+              <span class="copy">2022 BY TEMPLATEHOUSE. ALL RIGHTS RESEVED</span>
+            </div>
+          </dif>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [E]tedu-N17 -->
+  <script src="/js/setting.js"></script>
+  <script src="/js/plugin.js"></script>
+  <script src="/js/template.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/script.js"></script>
+</body>

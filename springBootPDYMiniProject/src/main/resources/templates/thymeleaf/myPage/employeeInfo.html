@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 교육 | dy</title>
+    <link rel="stylesheet" th:href="@{/css/setting.css}">
+    <link rel="stylesheet" th:href="@{/css/plugin.css}">
+    <link rel="stylesheet" th:href="@{/css/template.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            // 회원 정보 조회
+            $.ajax({
+                type: "post",
+                url: "empMyPage",
+                success: function (result) {
+                    console.log(result);
+                    var enterDate = new Date(result.employeeCommand.empHireDate);
+                    var enterYear = enterDate.getFullYear();
+                    var enterMonth = ("0" + (enterDate.getMonth() + 1)).slice(-2);
+                    var enterDay = ("0" + enterDate.getDate()).slice(-2);
+                    var item = "";
+                    item += "이름 : " + result.employeeCommand.empName + "<br />";
+                    item += "아이디 : " + result.employeeCommand.empId + "<br />";
+                    item += "주소 : " + result.employeeCommand.empAddr + "<br />";
+                    item += "상세주소 : " + result.employeeCommand.empAddrDetail + "<br />";
+                    item += "우편번호 : " + result.employeeCommand.empPost + "<br />";
+                    item += "연락처 : " + result.employeeCommand.empPhone + "<br />";
+                    item += "주민번호 : " + result.employeeCommand.empJumin + "<br />";
+                    item += "입사일 : " + enterYear + "-" + enterMonth + "-" + enterDay + "<br />";
+                    item += "이메일 : " + result.employeeCommand.empEmail + "<br />";
+                    $("#content").html(item);
+                },
+                error: function () {
+                    alert("서버 오류");
+                }
+            });
+        });
+
+        function empModify() {
+            $.ajax({
+                type: "get",
+                url: "empModify",
+                success: function (result) {
+                    console.log(result);
+                    $("#content").css("display", "none");
+                    $("#empForm").css("display", "block");
+                    var enterDate = new Date(result.employeeCommand.empHireDate);
+                    var enterYear = enterDate.getFullYear();
+                    var enterMonth = ("0" + (enterDate.getMonth() + 1)).slice(-2);
+                    var enterDay = ("0" + enterDate.getDate()).slice(-2);
+                    $("#empNum").val(result.employeeCommand.empNum);
+                    $("#empName").val(result.employeeCommand.empName);
+                    $("#empId").val(result.employeeCommand.empId);
+                    $("#empPhone").val(result.employeeCommand.empPhone);
+                    $("#empEmail").val(result.employeeCommand.empEmail);
+                    $("#empAddr").val(result.employeeCommand.empAddr);
+                    $("#empAddrDetail").val(result.employeeCommand.empAddrDetail);
+                    $("#empPost").val(result.employeeCommand.empPost);
+                    $("#empJumin").val(result.employeeCommand.empJumin);
+                    $("#empHireDate").val(enterYear + "-" + enterMonth + "-" + enterDay);
+                },
+                error: function () {
+                    alert("서버 오류");
+                }
+            });
+        }
+
+        function empPw() {
+            $("#empForm").css("display", "none");
+            $("#content").css("display", "block");
+            var item = "";
+            item += '<form action="empPwPro" method="post" id="frm">';
+            item += '현재비밀번호:<input type="password" name="oldPw" id="oldPw" required="required" /><br />';
+            item += '새 비밀번호:<input type="password" name="newPw" id="newPw" required="required" /><br />';
+            item += '<input type="submit" value="비밀번호 변경" />';
+            item += '</form>';
+            $("#content").html(item);
+        }
+    </script>
+</head>
+
+<body>
+
+     <!-- [S]tedu-N3 -->
+	<div class="tedu-N3" data-bid="XEm3ZgHi4n">
+		<div class="header-container lightmode">
+			<div class="header-top">
+				<div class="inner">
+					<div class="header-member">
+						<!-- 로그인 상태에 따라 아이콘 변경 -->
+						<th:block th:if="${session.auth == null}">
+							<a th:href="@{/login}"> <em class="ico"> <img
+									th:src="@{/icons/ico_login.svg}" alt="로그인 아이콘">
+							</em> <span>로그인</span>
+							</a>
+							<a href="/register/membershipAgree"> <em class="ico"> <img
+									src="/icons/ico_member.svg" alt="회원가입 아이콘">
+							</em> <span>회원가입</span>
+							</a>
+						</th:block>
+
+						<th:block th:if="${session.auth != null}">
+							<a href="/logout"> <em class="ico"> <img
+									src="/icons/ico_login.svg" alt="로그아웃 아이콘">
+							</em> <span>로그아웃</span>
+							</a>
+							<th:block th:if="${session.auth.grade == 'mem'}">
+								<a href="/myPage/myPage"> <em class="ico"> <img
+										src="/icons/ico_member.svg" alt="마이페이지 아이콘">
+								</em> <span>마이페이지</span>
+								</a>
+							</th:block>
+							<th:block th:if="${session.auth.grade == 'emp'}">
+								<a href="/myPage/empMyPage"> <em class="ico"> <img
+										src="/icons/ico_member.svg" alt="마이페이지 아이콘">
+								</em> <span>직원페이지</span>
+								</a>
+							</th:block>
+						</th:block>
+
+					</div>
+				</div>
+			</div>
+			<div class="header-nav">
+				<div class="inner">
+					<div class="header-logo">
+						<a href="/"> <img src="/images/logo_black.png" alt="로고">
+						</a>
+					</div>
+					<div class="header-gnb">
+						<div class="gnb-list">
+							<a th:href="@{goodsLists}">BEST 교육</a>
+						</div>
+						<div class="gnb-list">
+							<a href="javascript:void(0)">신규</a>
+						</div>
+						<div class="gnb-list">
+							<a href="javascript:void(0)">온라인 교육</a>
+						</div>
+					</div>
+					<div class="header-btn"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- [E]tedu-N3 -->
+ <main class="th-layout-main ">
+    <!-- [S]tedu-N47 -->
+    <div class="tedu-N47" data-bid="gKM3zgP8b1">
+      <div class="content-inner">
+        <div class="content-container">
+          <section class="myedu-wrap">
+            <div class="title-wrap">
+              <h3 class="cont-title">직원페이지</h3>
+            </div>
+            <div class="tab-menu-wrap">
+              <div class="tab-menu active">
+                <a href="javascript:void(0)">
+                  <span>전체 목록</span>
+                </a>
+              </div>
+              <div class="tab-menu">
+                <a href="/myPage/employeeMyPage">
+                  <span>직원 my정보 보기</span>
+                </a>
+              </div>
+              <div class="tab-menu">
+                <a href="member/memberList">
+                  <span>회원 관리</span>
+                </a>
+              </div>
+              <div class="tab-menu">
+                <a href="employee/employeeList">
+                  <span>직원 관리</span>
+                </a>
+              </div>
+              <div class="tab-menu">
+                <a href="goods/goodsList">
+                  <span>상품 관리</span>
+                </a>
+              </div>    
+              <div class="tab-menu">
+                <a href="/purchase/purchaseList">
+                  <span>주문 내역</</span>
+                </a>
+              </div>   
+              <div class="tab-menu">
+                <a href="/inquire/goodsQuestion">
+                  <span>상품 문의</</span>
+                </a>
+              </div> 
+             </div>      
+    <div id="content"></div>
+    <div id="empForm" style="display: none">
+        <form action="empModify" method="post" name="frm">
+            직원번호 : <input type="text" name="empNum" id="empNum" readonly="readonly" /><br />
+            직원명: <input type="text" name="empName" id="empName" /><br />
+            직원아이디: <input type="text" name="empId" id="empId" readonly="readonly" /><br />
+            직원연락처: <input type="text" name="empPhone" id="empPhone" /><br />
+            직원이메일: <input type="text" name="empEmail" id="empEmail" /><br />
+            직원주소: <input type="text" name="empAddr" id="empAddr" /><br />
+            직원상세주소: <input type="text" name="empAddrDetail" id="empAddrDetail" /><br />
+            직원우편번호: <input type="text" name="empPost" id="empPost" /><br />
+            직원주민번호: <input type="text" name="empJumin" id="empJumin" /><br />
+            직원입사일: <input type="date" name="empHireDate" id="empHireDate" /><br />
+            <input type="submit" value="직원 수정" />
+        </form>
+    </div>
+</body>
+
+</html>

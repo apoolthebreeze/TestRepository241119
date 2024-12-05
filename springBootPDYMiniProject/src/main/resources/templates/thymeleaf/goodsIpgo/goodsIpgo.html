@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <title>상품 입고 | dy</title>
+    <link rel="stylesheet" th:href="@{/css/setting.css}">
+    <link rel="stylesheet" th:href="@{/css/plugin.css}">
+    <link rel="stylesheet" th:href="@{/css/template.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+ 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+   <!-- ajaxSubmit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+<script type="text/javascript">
+function validated(){
+	if($("#goodsNum").val() == ""){
+		alert("상품번호를 입력해주세요.");
+		return false;
+	}
+}
+$(function(){
+	$("#btn").click(function(){
+		window.open("goodsItem","상품검색"
+				,"width=620, height=500, left=30, top=50");
+	});
+	/*
+	$("#frm").submit(function(){
+		if($("#goodsNum").val() == ""){
+			alert("상품번호를 입력해주세요.");
+			$("#goodsNum").focus();
+			return false;					
+		}
+		if($("#ipgoDate").val() == ""){
+			alert("입고일를 입력해주세요.");
+			$("#ipgoDate").focus();
+			return false;
+		}	
+		if($("#madeDate").val() == ""){
+			alert("제조일를 입력해주세요.");
+			$("#madeDate").focus();
+			return false;
+		}
+		if($("#ipgoPrice").val() == 0){
+			alert("금액를 입력해주세요.");
+			$("#ipgoPrice").focus();
+			return false;
+		}
+	});
+	*/
+	$("#regist").click(function(){
+		$("#frm").ajaxSubmit({  //CSR
+			type: "POST",
+			url: "ipgoRegist",
+			beforeSubmit : function(){
+				if($("#goodsNum").val() == ""){
+					alert("상품번호를 입력해주세요.");
+					$("#goodsNum").focus();
+					return false;					
+				}
+				if($("#ipgoDate").val() == ""){
+					alert("입고일를 입력해주세요.");
+					$("#ipgoDate").focus();
+					return false;
+				}	
+				if($("#madeDate").val() == ""){
+					alert("제조일를 입력해주세요.");
+					$("#madeDate").focus();
+					return false;
+				}
+				if($("#ipgoPrice").val() == 0){
+					alert("금액를 입력해주세요.");
+					$("#ipgoPrice").focus();
+					return false;
+				}
+			},
+			success : function(result){
+				if(result==200){
+					location.href="goodsIpgoList";
+				}
+			},
+			error : function(){
+				alert("서버오류");
+			}
+		});
+	});
+});
+</script>
+</head>
+
+<body>
+   <!-- [S]tedu-N3 -->
+	<div class="tedu-N3" data-bid="XEm3ZgHi4n">
+		<div class="header-container lightmode">
+			<div class="header-top">
+				<div class="inner">
+					<div class="header-member">
+						<!-- 로그인 상태에 따라 아이콘 변경 -->
+						<th:block th:if="${session.auth == null}">
+							<a th:href="@{/login}"> <em class="ico"> <img
+									th:src="@{/icons/ico_login.svg}" alt="로그인 아이콘">
+							</em> <span>로그인</span>
+							</a>
+							<a href="/register/membershipAgree"> <em class="ico"> <img
+									src="/icons/ico_member.svg" alt="회원가입 아이콘">
+							</em> <span>회원가입</span>
+							</a>
+						</th:block>
+
+						<th:block th:if="${session.auth != null}">
+							<a href="/logout"> <em class="ico"> <img
+									src="/icons/ico_login.svg" alt="로그아웃 아이콘">
+							</em> <span>로그아웃</span>
+							</a>
+							<th:block th:if="${session.auth.grade == 'mem'}">
+								<a href="/myPage/myPage"> <em class="ico"> <img
+										src="/icons/ico_member.svg" alt="마이페이지 아이콘">
+								</em> <span>마이페이지</span>
+								</a>
+							</th:block>
+							<th:block th:if="${session.auth.grade == 'emp'}">
+								<a href="/myPage/empMyPage"> <em class="ico"> <img
+										src="/icons/ico_member.svg" alt="마이페이지 아이콘">
+								</em> <span>직원페이지</span>
+								</a>
+							</th:block>
+						</th:block>
+
+					</div>
+				</div>
+			</div>
+			<div class="header-nav">
+				<div class="inner">
+					<div class="header-logo">
+						<a href="/"> <img src="/images/logo_black.png" alt="로고">
+						</a>
+					</div>
+					<div class="header-gnb">
+						<div class="gnb-list">
+							<a th:href="@{goodsLists}">BEST 교육</a>
+						</div>
+						<div class="gnb-list">
+							<a href="javascript:void(0)">신규</a>
+						</div>
+						<div class="gnb-list">
+							<a href="javascript:void(0)">온라인 교육</a>
+						</div>
+					</div>
+					<div class="header-btn"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <!-- [E]tedu-N3 -->
+
+    <main class="th-layout-main ">
+    <!-- [S]tedu-N47 -->
+    <div class="tedu-N47" data-bid="gKM3zgP8b1">
+      <div class="content-inner">
+        <div class="content-container">
+          <section class="myedu-wrap">
+            <div class="title-wrap">
+              <h3 class="cont-title">직원페이지</h3>
+            </div>
+            <div class="tab-menu-wrap">
+              <div class="tab-menu ">
+                <a href="javascript:void(0)">
+                  <span>전체 목록</span>
+                </a>
+              </div>
+              <div class="tab-menu">
+                <a href="/myPage/employeeMyPage">
+                  <span>직원 my정보 보기</span>
+                </a>
+              </div>
+              <div class="tab-menu ">
+                <a href="/member/memberList">
+                  <span>회원 관리</span>
+                </a>
+              </div>
+              <div class="tab-menu">
+                <a href="/employee/employeeList">
+                  <span>직원 관리</span>
+                </a>
+              </div>
+              <div class="tab-menu active">
+                <a href="/goods/goodsList">
+                  <span>상품 관리</span>
+                </a>
+              </div>    
+              <div class="tab-menu">
+                <a href="/purchase/purchaseList">
+                  <span>주문 내역</</span>
+                </a>
+              </div>   
+              <div class="tab-menu">
+                <a href="/inquire/goodsQuestion">
+                  <span>상품 문의</</span>
+                </a>
+              </div> 
+             </div>         
+        <div class="tedu-N39" data-bid="Ffm3ZglDN3">
+            <div class="content-inner">
+                <div class="content-container">
+                    <div class="member-wrap-03">
+                        <h3>입고리스트</h3><br>
+<form action="ipgoRegist" method="post" id="frm"  > <!-- onsubmit="return validated();" -->
+입고번호 : <input type="text" name= "goodsIpgoNum" id="goodsIpgoNum" th:value="${goodsIpgoCommand.goodsIpgoNum}"/>자동부여<br />
+상품번호 : <input type="text" name= "goodsNum" id="goodsNum" />
+		 <button type="button" id="btn" >상품 검색</button> <br />
+상품명 : <input type="text" name= "goodsName" id="goodsName" /><br />
+입고일 : <input type="date" name= "ipgoDate" id="ipgoDate" /><br />
+입고 수량 : <input type="number" name= "ipgoQty" id="ipgoQty" value="1" min="1" /><br />
+제조일 : <input type="datetime-local" name= "madeDate" id="madeDate" /><br />
+가격 : <input type="number" name= "ipgoPrice" id="ipgoPrice" value="0" min="0" max="100000" /><br />
+	  <!-- <input type="submit" value="submit 입고 등록" /> -->
+	  <!-- <input type="button" value="입고 등록" id="regist"/> 원래 강사님 코드 -->
+	  <input type="submit" value="입고 등록" id="regist"/>
+</form>
+                  <div id="result">
+  <div class="action-buttons" style="text-align: center; margin-top: 20px;">
+                    <a href="goodsList" class="btn">상품 관리</a> |
+                    <a href="goodsIpgo" class="btn">상품 입고</a> |
+                    <a href="goodsIpgoList" class="btn">상품 입고 현황</a> |
+                    <a href="javascript:history.back();" class="btn">뒤로가기</a>
+                </div>
+</div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- [S]tedu-N17 -->
+    <div class="tedu-N17" data-bid="pQm3ZgLDqW">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="inner">
+                    <div class="footer-menu">
+                        <a href="javascript:void(0)">이용약관</a>
+                        <a href="javascript:void(0)">개인정보처리방침</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-area">
+                <div class="inner">
+                    <div class="footer-info-wrap">
+                        <div class="footer-logo">
+                            <a href="javascript:void(0)">
+                                <img src="/images/logo_white.png" alt="로고">
+                            </a>
+                        </div>
+                        <div class="footer-info">
+                            <span>서울시 금천구 벚꽃로36길 30 가산 KS타워 1409호</span>
+                            <span>T. 070-8872-8874</span>
+                            <span>E. help@openfield.co.kr</span>
+                            <span class="copy">2022 BY TEMPLATEHOUSE. ALL RIGHTS RESEVED</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N17 -->
+
+    <script src="/js/setting.js"></script>
+    <script src="/js/plugin.js"></script>
+    <script src="/js/template.js"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+
+</html>

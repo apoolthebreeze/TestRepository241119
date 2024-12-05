@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>내 정보 | dy</title>
+<link rel="stylesheet" th:href="@{/css/setting.css}">
+<link rel="stylesheet" th:href="@{/css/plugin.css}">
+<link rel="stylesheet" th:href="@{/css/template.css}">
+<link rel="stylesheet" th:href="@{/css/common.css}">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script> 
+<script type="text/javascript" src="/static/js/checkbox.js"></script>
+<script type="text/javascript" th:src="@{/js/money.js}"></script>
+<script type="text/javascript">
+function cartAdd(goodsNum , goodsPrice){
+	var stringNumber = $("#"+goodsNum).text();  // 1,000
+	var number = Number(stringNumber.replace(/,/g, '')); // 1000
+	number += 1;
+	const commaNumber = number.toLocaleString(); // 1,001
+	
+	var formData = JSON.stringify({
+		goodsNum : goodsNum,
+		qty : 1
+	});
+
+	option = {
+		type: "post",
+		url: "/item/cartAdd",
+		contentType: "application/json",
+		data:formData,
+		success :  function(result){ // w1,000,000
+			var price = $("#t_"+goodsNum).text().substring(1).replace(/,/g, "");
+			console.log(price); // 100000
+			if(result == 200){
+				$("#"+goodsNum).text(commaNumber); // 수량  1000 + 1
+				price = Number(price) + parseInt(goodsPrice);     // 	1000
+				$("#t_"+goodsNum).text(formatter.format(price));
+			}
+		},
+		error : err ,
+		complete : prodChk
+	};
+	$.ajax(option);
+}
+function prodChk(){
+	var chkLeng  = $('input[name="nums"]')
+	var cnt = 0; // 상품 수
+	var totalQty = 0; // 총 상품의 갯수
+	var totalPrice = 0; // 총 상품 금액
+	for(var i = 0; i < chkLeng.length ; i++){
+		if(chkLeng[i].checked){
+			cnt ++;
+			var stringQty = $(".cartQty:eq("+i+")").text();  // 1,000
+			var number = Number(stringQty.replace(/,/g, '')); // 1000
+			totalQty += Number(number);
+			
+			var price = $(".totalPrice:eq("+i+")").text().substring(1).replace(/,/g,"");
+			totalPrice += Number(price);		
+		}
+	}
+	var commaQty = totalQty.toLocaleString(); // 1,001
+	$("#prodCnt").text(cnt);
+	$("#totQty").text(commaQty);
+	$("#totalPrice").text(formatter.format(totalPrice));
+}
+function err(){
+	alert("로그 아웃되었습니다. 다시로그인 해주세요.");
+	window.open("loginCk.login","loginck","width=400,height=400");
+}
+function checkQty(goodsNum, goodsPrice){
+	var stringNumber = $("#"+goodsNum).text();
+	var number = Number(stringNumber.replace(/,/g, ''));
+	if(number > 1){
+		number = number - 1;
+		const commaNumber = number.toLocaleString();
+		var xhr = new XMLHttpRequest();
+		xhr.onload = function(){
+			if(xhr.status==200){
+				var price = $("#t_"+goodsNum).text().substring(1).replace(/,/g, "");
+				$("#"+goodsNum).text(commaNumber);
+				price = Number(price) - parseInt(goodsPrice);
+				$("#t_"+goodsNum).text(formatter.format(price));
+				prodChk();
+			}
+		}
+		xhr.open("GET","cartQtyDown?goodsNum="+goodsNum, true);
+		xhr.send();
+	}else{
+		alert("최소 수량은 1이어야 합니다.");
+	}	
+}
+function del1(){
+	var chk_arr = [];
+	$("input:checkbox[name='nums']:checked").each(function(){
+		chk_arr.push($(this).val());
+	});
+	/*
+		$.ajax({
+			type:,
+			url:,
+			data:formData,
+			contentType:"application/json",
+			dataType:,
+			success:function(result){},
+			error:
+		});
+	*/
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST","cartDels",true);
+	xhr.setRequestHeader("Content-Type", "application/json");
+	var formData = JSON.stringify(chk_arr);
+	xhr.onload = function(){
+		if(xhr.status == 200){
+			var result = xhr.responseText;
+			if(result == "200") location.reload(); // CSR을 할 필요 없다.. SSR을 권장
+			else alert("삭제되지 않았습니다.");
+			
+		}else{
+			alert("삭제되지 않았습니다.");
+		}
+	}
+	xhr.send(formData);
+}
+</script>
+</head>
+<body>
+	<!-- [S]tedu-N3 -->
+	<div class="tedu-N3" data-bid="XEm3ZgHi4n">
+		<div class="header-container lightmode">
+			<div class="header-top">
+				<div class="inner">
+					<div class="header-member">
+						<!-- 로그인 상태에 따라 아이콘 변경 -->
+						<th:block th:if="${session.auth == null}">
+							<a th:href="@{/login}"> <em class="ico"> <img
+									th:src="@{/icons/ico_login.svg}" alt="로그인 아이콘">
+							</em> <span>로그인</span>
+							</a>
+							<a href="/register/membershipAgree"> <em class="ico"> <img
+									src="/icons/ico_member.svg" alt="회원가입 아이콘">
+							</em> <span>회원가입</span>
+							</a>
+						</th:block>
+
+						<th:block th:if="${session.auth != null}">
+							<a href="/logout"> <em class="ico"> <img
+									src="/icons/ico_login.svg" alt="로그아웃 아이콘">
+							</em> <span>로그아웃</span>
+							</a>
+							<th:block th:if="${session.auth.grade == 'mem'}">
+								<a href="/myPage/myPage"> <em class="ico"> <img
+										src="/icons/ico_member.svg" alt="마이페이지 아이콘">
+								</em> <span>마이페이지</span>
+								</a>
+							</th:block>
+							<th:block th:if="${session.auth.grade == 'emp'}">
+								<a href="/myPage/empMyPage"> <em class="ico"> <img
+										src="/icons/ico_member.svg" alt="마이페이지 아이콘">
+								</em> <span>직원페이지</span>
+								</a>
+							</th:block>
+						</th:block>
+
+					</div>
+				</div>
+			</div>
+			<div class="header-nav">
+				<div class="inner">
+					<div class="header-logo">
+						<a href="/"> <img src="/images/logo_black.png" alt="로고">
+						</a>
+					</div>
+					<div class="header-gnb">
+						<div class="gnb-list">
+							<a th:href="@{goodsLists}">BEST 교육</a>
+						</div>
+						<div class="gnb-list">
+							<a href="javascript:void(0)">신규</a>
+						</div>
+						<div class="gnb-list">
+							<a href="javascript:void(0)">온라인 교육</a>
+						</div>
+					</div>
+					<div class="header-btn"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- [E]tedu-N3 -->
+
+	<main class="th-layout-main ">
+		<div class="tedu-N47" data-bid="gKM3zgP8b1">
+      <div class="content-inner">
+        <div class="content-container">
+          <section class="myedu-wrap">
+            <div class="title-wrap">
+              <h3 class="cont-title">마이페이지</h3>
+            </div>
+            <div class="tab-menu-wrap">
+              <div class="tab-menu ">
+                <a href="/myPage/myPage">
+                  <span>전체 목록</span>
+                </a>
+              </div>
+              <div class="tab-menu ">
+                 <a href="/myPage/memberMyPage">
+                  <span>my정보 보기</span>
+                  </a>
+              </div>
+              <div class="tab-menu active">
+                <a href="/item/cartList">
+                  <span>장바구니</span>
+                </a>
+              </div>
+              <div class="tab-menu">
+                <a href="/purchase/orderList">
+                  <span>구매한 교육</span>
+                </a>
+              </div>
+              <div class="tab-menu">
+                <a href="/item/wishList">
+                  <span>찜한 교육</span>
+                </a>
+              </div>     
+             </div>      
+
+<form action="/purchase/goodsBuy" method="post" >
+<table width="600" align = "center">
+	<tr><td><input type="checkbox" id="checkBoxs" checked="checked"/></td>
+		<td>이미지</td><td>제품이름</td><td>수량</td><td>합계금액</td>
+		<td><input type="button"  value="선택 상품 삭제" onclick="del1();"/></td>
+	</tr>
+	
+	<tr th:each="dto : ${list}">
+		<td><input type="checkbox" name="nums" checked="checked" th:value="${dto.goodsDTO.goodsNum}" />
+		<td><img th:src="|/static/upload/${dto.goodsDTO.goodsMainStoreImage}|"  width="30"/></td>
+		<td>[[${dto.goodsDTO.goodsName}]]</td>
+		<td><a th:href="|javascript:checkQty('${dto.goodsDTO.goodsNum}','${dto.goodsDTO.goodsPrice}');|"> - </a>
+			<spna th:id="${dto.goodsDTO.goodsNum}" class="cartQty">[[${#numbers.formatInteger(dto.cartDTO.cartQty,1,'COMMA')}]]</spna>개
+			<a th:href="|javascript:cartAdd('${dto.goodsDTO.goodsNum}','${dto.goodsDTO.goodsPrice}');|"> + </a></td>
+		<td><span th:id="${'t_'+dto.goodsDTO.goodsNum}" class="totalPrice">[[${#numbers.formatCurrency(dto.goodsDTO.goodsPrice * dto.cartDTO.cartQty)}]]</span>원</td>
+		<td><input type="button"  value="삭제"  
+				th:attr="onclick=|javascript:location.href='cartDel?goodsNums=${dto.goodsDTO.goodsNum}'|"/> </td>
+	</tr>		
+
+	<tr><td colspan="6" align="right">
+			상품수 : <span id="prodCnt">[[${#numbers.formatInteger(list.size(),1,'COMMA')}]]</span>개<br />
+			총수량 : <span id="totQty">[[${#numbers.formatInteger(totQty,1,'COMMA')}]]</span>개<br />
+			전체 합계 : <span id="totalPrice">[[${#numbers.formatCurrency(totPri)}]]</span>원
+		</td>
+	</tr>
+	<tr><td colspan="6" align="right"><input type="submit" value="구매하기"/></td></tr>
+</table>
+</form>				
+	</main>
+
+	<!-- [S]tedu-N17 -->
+	<div class="tedu-N17" data-bid="fLM3zgHIUl">
+		<div class="footer-container">
+			<div class="footer-top">
+				<div class="inner">
+					<div class="footer-menu">
+						<a href="javascript:void(0)">이용약관</a> <a href="javascript:void(0)">개인정보처리방침</a>
+					</div>
+				</div>
+			</div>
+			<div class="footer-area">
+				<div class="inner">
+					<div class="footer-info-wrap">
+						<div class="footer-logo">
+							<a href="javascript:void(0)"> <img
+								src="/images/logo_white.png" alt="로고">
+							</a>
+						</div>
+						<div class="footer-info">
+							<span>서울시 금천구 벚꽃로36길 30 가산 KS타워 1409호</span> <span>T.
+								070-8872-8874</span> <span>E. help@openfield.co.kr</span> <span
+								class="copy">2022 BY TEMPLATEHOUSE. ALL RIGHTS RESEVED</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- [E]tedu-N17 -->
+
+	<script th:src="@{/js/setting.js}"></script>
+	<script th:src="@{/js/plugin.js}"></script>
+	<script th:src="@{/js/template.js}"></script>
+	<script th:src="@{/js/common.js}"></script>
+	<script th:src="@{/js/script.js}"></script>
+</body>
+
+</html>

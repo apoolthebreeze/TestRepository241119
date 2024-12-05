@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <title>회원수정 | dy</title>
+    <link rel="stylesheet" th:href="@{/css/setting.css}">
+    <link rel="stylesheet" th:href="@{/css/plugin.css}">
+    <link rel="stylesheet" th:href="@{/css/template.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script type="text/javascript" src="/static/js/check.js"></script>
+</head>
+
+<body>
+    <!-- [S]tedu-N3 -->
+    <div class="tedu-N3" data-bid="faM3zgLDiY">
+        <div class="header-container lightmode">
+            <div class="header-top">
+                <div class="inner">
+                    <div class="header-member">
+                        <a href="javascript:void(0)">
+                            <em class="ico">
+                                <img src="/icons/ico_login.svg" alt="로그인 아이콘">
+                            </em>
+                            <span>로그인</span>
+                        </a>
+                        <a href="javascript:void(0)">
+                            <em class="ico">
+                                <img src="/icons/ico_member.svg" alt="회원가입 아이콘">
+                            </em>
+                            <span>회원가입</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="header-nav">
+                <div class="inner">
+                    <div class="header-logo">
+                        <a href="javascript:void(0)">
+                            <img src="/images/logo_black.png" alt="로고">
+                        </a>
+                    </div>
+                    <div class="header-gnb">
+                        <div class="gnb-list">
+                            <a href="javascript:void(0)">BEST 교육</a>
+                        </div>
+                        <div class="gnb-list">
+                            <a href="javascript:void(0)">신규</a>
+                        </div>
+                        <div class="gnb-list">
+                            <a href="javascript:void(0)">온라인 교육</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N3 -->
+
+    <main class="th-layout-main ">
+        <div class="tedu-N39" data-bid="Ffm3ZglDN3">
+            <div class="content-inner">
+                <div class="content-container">
+                    <div class="member-wrap-03">
+                        <h3>회원수정 페이지입니다.</h3>
+                        <form action="memberUpdate" method="post" th:object="${memberCommand}">
+                            <input type="hidden" name="memberPw" value="!111Qqqq" />
+                            <input type="hidden" name="memberPwCon" value="!111Qqqq" />
+                            회원번호 : <input type="text" th:field="*{memberNum}" name="memberNum" readonly="readonly"><br />
+                            이름 : <input type="text" name="memberName" th:field="*{memberName}" />
+                            <span th:if="${#fields.hasErrors('memberName')}" th:errors="*{memberName}"></span><br />
+                            아이디 : <input type="text" name="memberId" th:field="*{memberId}" readonly="readonly">
+                            <span th:if="${#fields.hasErrors('memberId')}" th:errors="*{memberId}"></span><br />
+                            주소 : <input type="text" name="memberAddr" th:field="*{memberAddr}" />
+                            <span th:if="${#fields.hasErrors('memberAddr')}" th:errors="*{memberAddr}"></span><br />
+                            상세주소 : <input type="text" name="memberAddrDetail" th:field="*{memberAddrDetail}"/><br />
+                            우편번호 : <input type="text" name="memberPost" th:field="*{memberPost}"/><br />
+                            연락처1 : <input type="tel" name="memberPhone1" th:field="*{memberPhone1}"/>
+                            <span th:if="${#fields.hasErrors('memberPhone1')}" th:errors="*{memberPhone1}"></span><br />
+                            연락처2 : <input type="tel" name="memberPhone2" th:field="*{memberPhone2}"/><br />
+                            성별 : <input type="radio" name="gender" value="M" th:checked="*{gender == 'M'}"/>남자
+                            <input type="radio" name="gender" value="F" th:checked="*{gender == 'F'}"/>여자<br />
+                            등록일 : <input type="date" name="memberRegist" th:value="${#dates.format(memberCommand.memberRegist,'yyyy-MM-dd')}" /><br />
+                            생년월일 : <input type="date" name="memberBirth" th:value="${#dates.format(memberCommand.memberBirth,'yyyy-MM-dd')}" /><br />
+                            이메일 : <input type="email" name="memberEmail" id="userEamil" th:field="*{memberEmail}"/>
+                            <span id="emailCheck"></span>
+                            <span th:if="${#fields.hasErrors('memberEmail')}" th:errors="*{memberEmail}"></span><br />
+                            <input type="submit" value="회원수정 완료" />
+                            <input type="button" value="회원목록" onclick="javascript:location.href='memberList'">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- [S]tedu-N17 -->
+    <div class="tedu-N17" data-bid="pQm3ZgLDqW">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="inner">
+                    <div class="footer-menu">
+                        <a href="javascript:void(0)">이용약관</a>
+                        <a href="javascript:void(0)">개인정보처리방침</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-area">
+                <div class="inner">
+                    <div class="footer-info-wrap">
+                        <div class="footer-logo">
+                            <a href="javascript:void(0)">
+                                <img src="/images/logo_white.png" alt="로고">
+                            </a>
+                        </div>
+                        <div class="footer-info">
+                            <span>서울시 금천구 벚꽃로36길 30 가산 KS타워 1409호</span>
+                            <span>T. 070-8872-8874</span>
+                            <span>E. help@openfield.co.kr</span>
+                            <span class="copy">2022 BY TEMPLATEHOUSE. ALL RIGHTS RESEVED</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N17 -->
+
+    <script src="/js/setting.js"></script>
+    <script src="/js/plugin.js"></script>
+    <script src="/js/template.js"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+
+</html>

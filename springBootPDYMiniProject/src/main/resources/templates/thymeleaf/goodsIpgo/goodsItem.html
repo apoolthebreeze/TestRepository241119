@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 목록 | dy</title>
+    <link rel="stylesheet" th:href="@{/css/setting.css}">
+    <link rel="stylesheet" th:href="@{/css/plugin.css}">
+    <link rel="stylesheet" th:href="@{/css/template.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            // 최초 로드 시 상품 목록 불러오기
+            itemList();
+        });
+
+        function itemList(page = 1) {
+            $.ajax({
+                type: "post",
+                url: "goodsItem",
+                data: { "page": page, "searchWord": $("#searchWord").val() },
+                success: function (result) {
+                    var item = "";
+                    var itemsPerPage = 3; // 한 페이지에 표시되는 아이템 수 (서버에서 관리)
+                    var startingIndex = (page - 1) * itemsPerPage; // 현재 페이지 시작 인덱스 계산
+
+                    item += '<table border="0" style="width:100%; margin-top:20px;">';
+                    item += '   <thead>';
+                    item += '       <tr>';
+                    item += '           <th colspan="6">';
+                    item += '               상품 검색: <input type="search" id="searchWord" name="searchWord" value="' + result.searchWord + '" placeholder="검색어를 입력하세요">';
+                    item += '               <button class="btn-search" onclick="itemList(' + result.page + ')">검색</button>';
+                    item += '           </th>';
+                    item += '       </tr>';
+                    item += '   </thead>';
+                    item += '</table>';
+
+                    item += '<table border="1" style="width:100%; border-collapse:collapse; margin-top:20px;">';
+                    item += '   <thead>';
+                    item += '       <tr>';
+                    item += '           <th>번호</th>';
+                    item += '           <th>상품 번호</th>';
+                    item += '           <th>상품명</th>';
+                    item += '           <th>가격</th>';
+                    item += '       </tr>';
+                    item += '   </thead>';
+                    item += '   <tbody>';
+                    $.each(result.list, function (idx, dto) {
+                        var displayIndex = startingIndex + idx + 1; // 페이지 시작 번호 + 현재 항목의 순서
+                        item += '   <tr>';
+                        item += '       <td>' + displayIndex + '</td>';
+                        item += '       <td><a href="javascript:goodsItem(\'' + dto.goodsNum + '\', \'' + dto.goodsName + '\')">' + dto.goodsNum + '</a></td>';
+                        item += '       <td><a href="javascript:goodsItem(\'' + dto.goodsNum + '\', \'' + dto.goodsName + '\')">' + dto.goodsName + '</a></td>';
+                        item += '       <td>' + dto.goodsPrice + '</td>';
+                        item += '   </tr>';
+                    });
+                    item += '   </tbody>';
+                    item += '</table>';
+
+                    // 페이지네이션 추가
+                    item += '<div class="pagination" style="text-align:center; margin-top:20px;">';
+                    if (result.page <= 1) {
+                        item += '[이전]';
+                    } else {
+                        item += '<a href="javascript:itemList(' + (result.page - 1) + ')">[이전]</a>';
+                    }
+                    for (let i = result.startPage; i <= result.endPage; i++) {
+                        item += '<a href="javascript:itemList(' + i + ')">[' + i + ']</a>';
+                    }
+                    if (result.page >= result.maxPage) {
+                        item += '[다음]';
+                    } else {
+                        item += '<a href="javascript:itemList(' + (result.page + 1) + ')">[다음]</a>';
+                    }
+                    item += '</div>';
+
+                    $("#goodsList").html(item);
+                },
+                error: function () {
+                    alert("서버 오류가 발생했습니다.");
+                }
+            });
+        }
+
+        // 부모 창에 상품 정보 전달 후 현재 창 닫기
+        function goodsItem(goodsNum, goodsName) {
+            $(opener.document).find("#goodsNum").val(goodsNum);
+            $(opener.document).find("#goodsName").val(goodsName);
+            window.self.close();
+        }
+    </script>
+</head>
+
+<body>
+    <h2>상품 목록</h2>
+    <div id="goodsList"></div>
+</body>
+
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상품 수정하기 | dy</title>
+<link rel="stylesheet" th:href="@{/css/setting.css}">
+<link rel="stylesheet" th:href="@{/css/plugin.css}">
+<link rel="stylesheet" th:href="@{/css/template.css}">
+<link rel="stylesheet" th:href="@{/css/common.css}">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$.ajax({
+			type : "get",
+			url : "goodsWrite",
+			dataType : "html",
+			success : function(result) {
+				$("#writeForm").html(result);
+			},
+			error : function() {
+				alert("서버오류");
+			}
+		});
+	});
+</script>
+
+<style>
+table {
+	margin-top: 20px;
+	border-collapse: collapse;
+	width: 100%;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+	padding: 12px;
+	text-align: left;
+	border-bottom: 1px solid #ddd;
+}
+
+th {
+	background-color: #f2f2f2;
+	font-weight: bold;
+}
+
+tr:hover {
+	background-color: #f9f9f9;
+}
+
+.btn-search {
+	padding: 5px 10px;
+	background-color: #28a745;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-left: 5px;
+}
+
+.btn-search:hover {
+	background-color: #218838;
+}
+
+.pagination {
+	margin-top: 20px;
+	text-align: center;
+}
+
+.pagination a {
+	margin: 0 5px;
+	text-decoration: none;
+	color: #007BFF;
+}
+
+.pagination a:hover {
+	text-decoration: underline;
+}
+</style>
+</head>
+
+<body>
+	<div class="tedu-N3" data-bid="XEm3ZgHi4n">
+		<div class="header-container lightmode">
+			<div class="header-top">
+				<div class="inner">
+					<div class="header-member">
+						<th:block th:if="${session.auth == null}">
+							<a th:href="@{/login}"> <em class="ico"> <img
+									th:src="@{/icons/ico_login.svg}" alt="로그인 아이콘">
+							</em> <span>로그인</span>
+							</a>
+							<a href="/register/membershipAgree"> <em class="ico"> <img
+									src="/icons/ico_member.svg" alt="회원가입 아이콘">
+							</em> <span>회원가입</span>
+							</a>
+						</th:block>
+
+						<th:block th:if="${session.auth != null}">
+							<a href="/logout"> <em class="ico"> <img
+									src="/icons/ico_login.svg" alt="로그아웃 아이콘">
+							</em> <span>로그아웃</span>
+							</a>
+							<th:block th:if="${session.auth.grade == 'mem'}">
+								<a href="/myPage/myPage"> <em class="ico"> <img
+										src="/icons/ico_member.svg" alt="마이페이지 아이콘">
+								</em> <span>마이페이지</span>
+								</a>
+							</th:block>
+							<th:block th:if="${session.auth.grade == 'emp'}">
+								<a href="/myPage/empMyPage"> <em class="ico"> <img
+										src="/icons/ico_member.svg" alt="마이페이지 아이콘">
+								</em> <span>직원페이지</span>
+								</a>
+							</th:block>
+						</th:block>
+					</div>
+				</div>
+			</div>
+			<div class="header-nav">
+				<div class="inner">
+					<div class="header-logo">
+						<a href="/"> <img src="/images/logo_black.png" alt="로고">
+						</a>
+					</div>
+					<div class="header-gnb">
+						<div class="gnb-list">
+							<a th:href="@{goodsLists}">BEST 교육</a>
+						</div>
+						<div class="gnb-list">
+							<a href="javascript:void(0)">신규</a>
+						</div>
+						<div class="gnb-list">
+							<a href="javascript:void(0)">온라인 교육</a>
+						</div>
+					</div>
+					<div class="header-btn"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="tedu-N47" data-bid="gKM3zgP8b1">
+			<div class="content-inner">
+				<div class="content-container">
+					<section class="myedu-wrap">
+						<div class="title-wrap">
+							<h3 class="cont-title">상품 관리</h3>
+						</div>
+						<div class="tab-menu-wrap">
+							<div class="tab-menu ">
+								<a href="javascript:void(0)"> <span>전체 목록</span>
+								</a>
+							</div>
+							<div class="tab-menu">
+								<a href="/myPage/employeeMyPage"> <span>직원 my정보 보기</span>
+								</a>
+							</div>
+							<div class="tab-menu">
+								<a href="/member/memberList"> <span>회원 관리</span>
+								</a>
+							</div>
+							<div class="tab-menu">
+								<a href="/employee/employeeList"> <span>직원 관리</span>
+								</a>
+							</div>
+							<div class="tab-menu active">
+								<a href="/goods/goodsLists"> <span>상품 관리</span>
+								</a>
+							</div>
+							<div class="tab-menu">
+								<a href="/purchase/purchaseList"> <span>주문 내역</span>
+								</a>
+							</div>
+							<div class="tab-menu">
+								<a href="/inquire/goodsQuestion"> <span>상품 문의</span>
+								</a>
+							</div>
+						</div>
+						<div class="tedu-N47" data-bid="gKM3zgP8b1">
+							<div class="content-inner">
+								<div class="content-container">
+									<section class="myedu-wrap">
+										<div class="title-wrap">
+											<ul>
+												<li><a href="goodsForm">상품 추가</a></li>
+												<li><a href="goodsIpgoList">상품 입고 현황</a></li>
+												<img src="" />
+											</ul>
+											<div id="writeForm"></div>
+										</div>
+
+									</section>
+								</div>
+							</div>
+						</div>
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="imagetoolbar" content="no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="title" content="웹사이트">
+  <meta name="description" content="웹사이트입니다.">
+  <meta name="keywords" content="키워드,키워드,키워드">
+  <meta property="og:title" content="웹사이트">
+  <meta property="og:description" content="웹사이트입니다">
+  <meta property="og:image" content="https://웹사이트/images/opengraph.png">
+  <meta property="og:url" content="https://웹사이트">
+  <title>결제하기 | dy</title>
+  <link rel="stylesheet" href="/css/setting.css">
+  <link rel="stylesheet" href="/css/plugin.css">
+  <link rel="stylesheet" href="/css/template.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+ <!-- [S]tedu-N3 -->
+	<div class="tedu-N3" data-bid="XEm3ZgHi4n">
+		<div class="header-container lightmode">
+			<div class="header-top">
+				<div class="inner">
+					<div class="header-member">
+						<!-- 로그인 상태에 따라 아이콘 변경 -->
+						<th:block th:if="${session.auth == null}">
+							<a th:href="@{/login}"> <em class="ico"> <img
+									th:src="@{/icons/ico_login.svg}" alt="로그인 아이콘">
+							</em> <span>로그인</span>
+							</a>
+							<a href="/register/membershipAgree"> <em class="ico"> <img
+									src="/icons/ico_member.svg" alt="회원가입 아이콘">
+							</em> <span>회원가입</span>
+							</a>
+						</th:block>
+
+						<th:block th:if="${session.auth != null}">
+							<a href="/logout"> <em class="ico"> <img
+									src="/icons/ico_login.svg" alt="로그아웃 아이콘">
+							</em> <span>로그아웃</span>
+							</a>
+							<th:block th:if="${session.auth.grade == 'mem'}">
+								<a href="/myPage/myPage"> <em class="ico"> <img
+										src="/icons/ico_member.svg" alt="마이페이지 아이콘">
+								</em> <span>마이페이지</span>
+								</a>
+							</th:block>
+							<th:block th:if="${session.auth.grade == 'emp'}">
+								<a href="/myPage/empMyPage"> <em class="ico"> <img
+										src="/icons/ico_member.svg" alt="마이페이지 아이콘">
+								</em> <span>직원페이지</span>
+								</a>
+							</th:block>
+						</th:block>
+
+					</div>
+				</div>
+			</div>
+			<div class="header-nav">
+				<div class="inner">
+					<div class="header-logo">
+						<a href="/"> <img src="/images/logo_black.png" alt="로고">
+						</a>
+					</div>
+					<div class="header-gnb">
+						<div class="gnb-list">
+							<a th:href="@{goodsLists}">BEST 교육</a>
+						</div>
+						<div class="gnb-list">
+							<a href="javascript:void(0)">신규</a>
+						</div>
+						<div class="gnb-list">
+							<a href="javascript:void(0)">온라인 교육</a>
+						</div>
+					</div>
+					<div class="header-btn"></div>
+				</div>
+			</div>
+		</div>
+
+
+
+	</div>
+	<main class="th-layout-main ">
+    <!-- [S]tedu-N47 -->
+    <div class="tedu-N47" data-bid="gKM3zgP8b1">
+      <div class="content-inner">
+        <div class="content-container">
+          <section class="myedu-wrap">
+            <div class="title-wrap">
+              <h3 class="cont-title">직원페이지</h3>
+            </div>
+            <div class="tab-menu-wrap">
+              <div class="tab-menu ">
+                <a href="javascript:void(0)">
+                  <span>전체 목록</span>
+                </a>
+              </div>
+              <div class="tab-menu">
+                <a href="/myPage/employeeMyPage">
+                  <span>직원 my정보 보기</span>
+                </a>
+              </div>
+              <div class="tab-menu ">
+                <a href="/member/memberList">
+                  <span>회원 관리</span>
+                </a>
+              </div>
+              <div class="tab-menu">
+                <a href="/employee/employeeList">
+                  <span>직원 관리</span>
+                </a>
+              </div>
+              <div class="tab-menu">
+                <a href="/goods/goodsList">
+                  <span>상품 관리</span>
+                </a>
+              </div>    
+              <div class="tab-menu ">
+                <a href="/purchase/purchaseList">
+                  <span>주문 내역</</span>
+                </a>
+              </div>   
+              <div class="tab-menu active">
+                <a href="/inquire/goodsQuestion">
+                  <span>상품 문의</</span>
+                </a>
+              </div> 
+             </div>         
+<form action="inquireAnswer" method="post">
+<table width="600" >
+<tr><th>문의 번호</th>
+	<td><input type="text" th:value="${list[0].inquireNum}" name="inquireNum" readonly="readonly" /></td></tr>
+<tr><th>질문자</th><td>[[${list[0].memberNum}]]</td></tr>
+<tr><th>문의 제목</th><td>[[${list[0].inquireSubject}]]</td></tr>
+<tr><th>문의 등록일</th><td>[[${#dates.format(list[0].inquireDate,'yyyy-MM-dd')}]]</td></tr>
+<tr><th>문의 내용</th>
+	<td><span th:utext="${#strings.replace(list[0].inquireContents,newLineChar, '<br />')}"></span></td>
+</tr>
+<tr><th>답변한 사람</th><td>[[${list[0].empNum}]]</td></tr>
+<tr><th>답변일</th><td>[[${#dates.format(list[0].inquireAnswerDate,'yyyy-MM-dd')}]]</td></tr>
+<tr><th>문의 답변</th>
+	<td><textarea rows="10" cols="50" name="inquireAnswer" >[[${list[0].inquireAnswer}]]</textarea></td>
+</tr>
+<tr><th colspan="2"><input type="submit" value="답변달기" /></th></tr>
+</table>
+</form>
+</section></div></div></div></main>
+</body>
+</html>

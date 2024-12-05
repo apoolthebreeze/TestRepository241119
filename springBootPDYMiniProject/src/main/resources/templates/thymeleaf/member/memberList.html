@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <title>회원 목록 | dy</title>
+    <link rel="stylesheet" th:href="@{/css/setting.css}">
+    <link rel="stylesheet" th:href="@{/css/plugin.css}">
+    <link rel="stylesheet" th:href="@{/css/template.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script type="text/javascript" src="/static/js/checkbox.js"></script>
+</head>
+
+<body>
+   <!-- [S]tedu-N3 -->
+	<div class="tedu-N3" data-bid="XEm3ZgHi4n">
+		<div class="header-container lightmode">
+			<div class="header-top">
+				<div class="inner">
+					<div class="header-member">
+						<!-- 로그인 상태에 따라 아이콘 변경 -->
+						<th:block th:if="${session.auth == null}">
+							<a th:href="@{/login}"> <em class="ico"> <img
+									th:src="@{/icons/ico_login.svg}" alt="로그인 아이콘">
+							</em> <span>로그인</span>
+							</a>
+							<a href="/register/membershipAgree"> <em class="ico"> <img
+									src="/icons/ico_member.svg" alt="회원가입 아이콘">
+							</em> <span>회원가입</span>
+							</a>
+						</th:block>
+
+						<th:block th:if="${session.auth != null}">
+							<a href="/logout"> <em class="ico"> <img
+									src="/icons/ico_login.svg" alt="로그아웃 아이콘">
+							</em> <span>로그아웃</span>
+							</a>
+							<th:block th:if="${session.auth.grade == 'mem'}">
+								<a href="/myPage/myPage"> <em class="ico"> <img
+										src="/icons/ico_member.svg" alt="마이페이지 아이콘">
+								</em> <span>마이페이지</span>
+								</a>
+							</th:block>
+							<th:block th:if="${session.auth.grade == 'emp'}">
+								<a href="/myPage/empMyPage"> <em class="ico"> <img
+										src="/icons/ico_member.svg" alt="마이페이지 아이콘">
+								</em> <span>직원페이지</span>
+								</a>
+							</th:block>
+						</th:block>
+
+					</div>
+				</div>
+			</div>
+			<div class="header-nav">
+				<div class="inner">
+					<div class="header-logo">
+						<a href="/"> <img src="/images/logo_black.png" alt="로고">
+						</a>
+					</div>
+					<div class="header-gnb">
+						<div class="gnb-list">
+							<a th:href="@{goodsLists}">BEST 교육</a>
+						</div>
+						<div class="gnb-list">
+							<a href="javascript:void(0)">신규</a>
+						</div>
+						<div class="gnb-list">
+							<a href="javascript:void(0)">온라인 교육</a>
+						</div>
+					</div>
+					<div class="header-btn"></div>
+				</div>
+			</div>
+		</div>
+
+
+
+	</div>
+	<main class="th-layout-main ">
+    <!-- [S]tedu-N47 -->
+    <div class="tedu-N47" data-bid="gKM3zgP8b1">
+      <div class="content-inner">
+        <div class="content-container">
+          <section class="myedu-wrap">
+            <div class="title-wrap">
+              <h3 class="cont-title">직원페이지</h3>
+            </div>
+            <div class="tab-menu-wrap">
+              <div class="tab-menu ">
+                <a href="javascript:void(0)">
+                  <span>전체 목록</span>
+                </a>
+              </div>
+              <div class="tab-menu">
+                <a href="/myPage/employeeMyPage">
+                  <span>직원 my정보 보기</span>
+                </a>
+              </div>
+              <div class="tab-menu active">
+                <a href="/member/memberList">
+                  <span>회원 관리</span>
+                </a>
+              </div>
+              <div class="tab-menu">
+                <a href="/employee/employeeList">
+                  <span>직원 관리</span>
+                </a>
+              </div>
+              <div class="tab-menu">
+                <a href="/goods/goodsList">
+                  <span>상품 관리</span>
+                </a>
+              </div>    
+              <div class="tab-menu">
+                <a href="/purchase/purchaseList">
+                  <span>주문 내역</</span>
+                </a>
+              </div>   
+              <div class="tab-menu">
+                <a href="/inquire/goodsQuestion">
+                  <span>상품 문의</</span>
+                </a>
+              </div> 
+             </div>         
+      <div class="tedu-N39" data-bid="Ffm3ZglDN3">
+        <div class="content-inner">
+            <div class="content-container">
+            <h2>회원 목록 페이지입니다.</h2><br>
+              <!--   <a href="memberWrite" class="btn">회원등록</a><br /> -->
+                <p>회원수 : [[${count}]]</p>
+                <table border="1" width="100%" style="border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th colspan="6">
+                                회원 검색:
+                                <form action="memberList" method="get" style="display: inline;">
+                                    <input type="search" name="searchWord" size="60" th:value="${searchWord}" placeholder="검색어를 입력하세요">
+                                    <input type="submit" value="검색" class="btn-search">
+                                    
+                                    <div class="tab-menu">
+<ul >
+	<li><a href="memberWrite" class="btn">회원등록</a></li>
+</ul>
+</div>
+                                </form>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th><input type="checkbox" id="checkBoxs" /></th>
+                            <th>번호</th>
+                            <th>이름</th>
+                            <th>아이디</th>
+                            <th>등록일</th>
+                            <th>작업</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <form action="membersDelete" method="post" id="frm">
+                            <tr th:each="dto : ${list}">
+                                <td><input type="checkbox" name="nums" th:value="${dto.memberNum}"/></td>
+                                <td><a th:href="|memberDetail/${dto.memberNum}|">[[${dto.memberNum}]]</a></td>
+                                <td><a th:href="@{memberDetail(${dto.memberNum})}">[[${dto.memberName}]]</a></td>
+                                <td>[[${dto.memberId}]]</td>
+                                <td>[[${#dates.format(dto.memberRegist,'yyyy-MM-dd')}]]</td>
+                                <td><button type="button" th:attr="onclick=|javascript:location.href='membersDelete?nums=${dto.memberNum}'|">삭제</button></td>
+                            </tr>
+                        </form>
+                    </tbody>
+                </table>
+  <div class="pagination" style="text-align: center; margin-top: 20px;">
+    <span th:if="${page <= 1}">[이전]</span>
+    <span th:if="${page > 1}">
+        <a th:href="|memberList?page=${page - 1}&searchWord=${searchWord}|">[이전]</a>
+    </span>
+    <th:block th:each="i : ${#numbers.sequence(startPageNum, endPageNum)}">
+        [<a th:href="|memberList?page=${i}&searchWord=${searchWord}|">[[${i}]]</a>]
+    </th:block>
+    <span th:if="${page < maxPage}">
+        <a th:href="@{memberList(page=${page + 1},searchWord=${searchWord})}">[다음]</a>
+    </span>
+    <span th:if="${page >= maxPage}">[다음]</span>
+</div>
+
+            </div>
+        </div>
+    </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <!-- [E]tedu-N47 -->
+  </main>
+
+<style>
+    table {
+        margin-top: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    .btn {
+        padding: 10px 15px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+    .btn:hover {
+        background-color: #0056b3;
+    }
+    .btn-search {
+        padding: 5px 10px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .btn-search:hover {
+        background-color: #218838;
+    }
+    .pagination {
+        margin-top: 20px;
+    }
+    .pagination a {
+        margin: 0 5px;
+        text-decoration: none;
+        color: #007BFF;
+    }
+    .pagination a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+
+    <!-- [S]tedu-N17 -->
+    <div class="tedu-N17" data-bid="pQm3ZgLDqW">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="inner">
+                    <div class="footer-menu">
+                        <a href="javascript:void(0)">이용약관</a>
+                        <a href="javascript:void(0)">개인정보처리방침</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-area">
+                <div class="inner">
+                    <div class="footer-info-wrap">
+                        <div class="footer-logo">
+                            <a href="javascript:void(0)">
+                                <img src="/images/logo_white.png" alt="로고">
+                            </a>
+                        </div>
+                        <div class="footer-info">
+                            <span>서울시 금천구 벚꽃로36길 30 가산 KS타워 1409호</span>
+                            <span>T. 070-8872-8874</span>
+                            <span>E. help@openfield.co.kr</span>
+                            <span class="copy">2022 BY TEMPLATEHOUSE. ALL RIGHTS RESEVED</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N17 -->
+
+    <script src="/js/setting.js"></script>
+    <script src="/js/plugin.js"></script>
+    <script src="/js/template.js"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+
+</html>
